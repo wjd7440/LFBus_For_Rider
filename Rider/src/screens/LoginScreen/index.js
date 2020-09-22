@@ -1,73 +1,133 @@
-import React, { useEffect, useState, Component } from "react";
+import React, { useState, useEffect, Component, Fragment } from "react";
+import SearchableDropdown from "react-native-searchable-dropdown";
+import { BUS_STATION_LIST_QUERY } from "../Queries";
+import { useQuery } from "react-apollo-hooks";
 import {
   View,
   Text,
-  TextInput,
   TouchableOpacity,
-  Alert,
   StyleSheet,
+  StatusBar,
 } from "react-native";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
-import { useLogIn } from "../../../AuthContext";
-import { useForm } from "react-hook-form";
-import { useMutation } from "react-apollo-hooks";
-import { LOGIN_QUERY, TOKENUPDATE_QUERY } from "../Queries";
-import { Block, theme } from "galio-framework";
 
 export default ({ navigation }) => {
-  return (
-    <View style={styles.container}>
-      <View style={styles.titleArea}>
-        <Text style={styles.title}>LFBus_For_User</Text>
-      </View>
-    </View>
-  );
+  const [busStationNo, setBusStationNo] = useState(null);
+  const [busStationName, setBusStationName] = useState(null);
+  const [items, setItemsArray] = useState([]);
+  const { data, loading, refetch } = useQuery(BUS_STATION_LIST_QUERY, {
+    fetchPolicy: "network-only",
+  });
+  const originItems = !loading && data.KioskBusStationList.busStations;
+
+  useEffect(() => {
+    if (!loading) {
+      let tempItems = [];
+
+      originItems.map((rowData, index) => {
+        tempItems.push({
+          id: rowData.BUS_NODE_ID,
+          name: rowData.BUSSTOP_NM,
+        });
+      });
+      setItemsArray(tempItems);
+    }
+  }, [loading]);
+
+  if (loading) {
+    return <Text>Loading......</Text>;
+  } else {
+    return (
+      <Fragment>
+        <SearchableDropdown
+          multi={true}
+          containerStyle={{ padding: 15 }}
+          onItemSelect={(item) => {
+            setBusStationNo(item.id);
+            setBusStationName(item.name);
+          }}
+          itemStyle={{
+            padding: 10,
+            marginTop: 2,
+            backgroundColor: "#ddd",
+            borderColor: "#bbb",
+            borderWidth: 1,
+            borderRadius: 5,
+          }}
+          itemTextStyle={{ color: "#222", fontSize: 16 }}
+          itemsContainerStyle={{ maxHeight: 216 }}
+          items={items}
+          defaultIndex={0}
+          chip={true}
+          resetValue={false}
+          textInputProps={{
+            placeholder: "버스정류장을 검색해주세요.",
+            underlineColorAndroid: "transparent",
+            style: {
+              padding: 12,
+              borderWidth: 1,
+              borderColor: "#ccc",
+              borderRadius: 5,
+              backgroundColor: "#fff",
+            },
+          }}
+          listProps={{
+            nestedScrollEnabled: true,
+          }}
+        />
+        {busStationNo ? (
+          <TouchableOpacity
+            style={styles.submitButton}
+            onPress={() =>
+              navigation.navigate("저상버스도착현황", {
+                busStationNo,
+                busStationName,
+              })
+            }
+          >
+            <Text style={styles.submitButtonText}>검색</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            disabled={true}
+            style={styles.submitButton}
+            onPress={() =>
+              navigation.navigate("저상버스도착현황", {
+                busStationNo,
+                busStationName,
+              })
+            }
+          >
+            <Text style={styles.submitButtonText}>검색</Text>
+          </TouchableOpacity>
+        )}
+      </Fragment>
+    );
+  }
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "white",
-    paddingLeft: wp("10%"),
-    paddingRight: wp("10%"),
-    justifyContent: "center",
+    paddingTop: 23,
   },
-  titleArea: {
-    width: "100%",
-    padding: wp("10%"),
+  input: {
+    margin: 15,
+    height: 40,
+    borderColor: "#7a42f4",
+    borderWidth: 1,
+  },
+  submitButton: {
+    backgroundColor: "#7a42f4",
+    padding: 10,
+    margin: 15,
+    marginTop: 5,
+    height: 50,
     alignItems: "center",
-  },
-  title: {
-    fontSize: wp("8%"),
-  },
-  formArea: {
-    width: "100%",
-    paddingBottom: wp("10%"),
-  },
-  textForm: {
-    borderWidth: 0.5,
-    borderColor: "#888",
-    width: "100%",
-    height: hp("5%"),
-    paddingLeft: 5,
-    paddingRight: 5,
-    marginBottom: 5,
-  },
-  buttonArea: {
-    width: "100%",
-    height: hp("5%"),
-  },
-  button: {
-    backgroundColor: "#46c3ad",
-    width: "100%",
-    height: "100%",
     justifyContent: "center",
-    alignItems: "center",
+    borderRadius: 4,
   },
-  buttonTitle: {
+  submitButtonText: {
     color: "white",
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
