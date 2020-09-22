@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "LFBus_For_Rider",
-    "slug": "LFBus_For_Rider",
+    "name": "Rider",
+    "slug": "Rider",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
