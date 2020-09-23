@@ -7,6 +7,7 @@ const Stack = createStackNavigator();
 
 // login
 import LoginScreen from "../src/screens/LoginScreen";
+import HomeScreen from "../src/screens/HomeScreen";
 
 // header for screens
 import Header from "../components/Header";
@@ -25,6 +26,13 @@ export default () => {
         <Stack.Screen
           name="LoginScreen"
           component={LoginScreen}
+          options={{
+            header: () => {},
+          }}
+        />
+        <Stack.Screen
+          name="HomeScreen"
+          component={HomeScreen}
           options={{
             header: () => {},
           }}

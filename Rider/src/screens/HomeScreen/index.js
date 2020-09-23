@@ -6,19 +6,25 @@ import {
   Dimensions,
   TouchableOpacity,
 } from "react-native";
-
-import * as Location from "expo-location";
-import { BUS_STATION_LIST_QUERY } from "../Queries";
 import { useQuery } from "react-apollo-hooks";
-import Loader from "../../../components/Loader";
-import { ScrollView } from "react-native-gesture-handler";
+import { RESERVATION_LIST_QUERY } from "../Queries";
 
-const { width, height } = Dimensions.get("window");
-
-export default ({ navigation }) => {
+export default ({ route }) => {
+  const CAR_REG_NO = route.params ? route.params.busCarRegNo : null;
+  const { data, loading } = useQuery(RESERVATION_LIST_QUERY, {
+    fetchPolicy: "network-only",
+    variables: {
+      CAR_REG_NO: CAR_REG_NO,
+    },
+  });
+  console.log(data);
   return (
-    <View style={{ flex: 1 }}>
-      <Text>hi</Text>
+    <View>
+      <Text>hiqweqweqweqwewq</Text>
+      <Text>hiqweqweqweqwewq</Text>
+      <Text>hiqweqweqweqwewq</Text>
+      <Text>hiqweqweqweqwewq</Text>
+      <Text>hiqweqweqweqwewq</Text>
     </View>
   );
 };

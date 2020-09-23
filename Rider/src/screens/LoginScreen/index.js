@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Component, Fragment } from "react";
 import SearchableDropdown from "react-native-searchable-dropdown";
-import { BUS_STATION_LIST_QUERY } from "../Queries";
+import { BUS_INFO_LIST_QUERY } from "../Queries";
 import { useQuery } from "react-apollo-hooks";
 import {
   View,
@@ -11,13 +11,13 @@ import {
 } from "react-native";
 
 export default ({ navigation }) => {
-  const [busStationNo, setBusStationNo] = useState(null);
-  const [busStationName, setBusStationName] = useState(null);
+  const [busId, setBusId] = useState(null);
+  const [busCarRegNo, setBusCarRegNo] = useState(null);
   const [items, setItemsArray] = useState([]);
-  const { data, loading, refetch } = useQuery(BUS_STATION_LIST_QUERY, {
+  const { data, loading, refetch } = useQuery(BUS_INFO_LIST_QUERY, {
     fetchPolicy: "network-only",
   });
-  const originItems = !loading && data.KioskBusStationList.busStations;
+  const originItems = !loading && data.RiderBusInfoList.busInfoes;
 
   useEffect(() => {
     if (!loading) {
@@ -25,8 +25,8 @@ export default ({ navigation }) => {
 
       originItems.map((rowData, index) => {
         tempItems.push({
-          id: rowData.BUS_NODE_ID,
-          name: rowData.BUSSTOP_NM,
+          id: index,
+          name: rowData.CAR_REG_NO,
         });
       });
       setItemsArray(tempItems);
@@ -42,8 +42,8 @@ export default ({ navigation }) => {
           multi={true}
           containerStyle={{ padding: 15 }}
           onItemSelect={(item) => {
-            setBusStationNo(item.id);
-            setBusStationName(item.name);
+            setBusId(item.id);
+            setBusCarRegNo(item.name);
           }}
           itemStyle={{
             padding: 10,
@@ -74,13 +74,13 @@ export default ({ navigation }) => {
             nestedScrollEnabled: true,
           }}
         />
-        {busStationNo ? (
+        {busCarRegNo ? (
           <TouchableOpacity
             style={styles.submitButton}
             onPress={() =>
-              navigation.navigate("저상버스도착현황", {
-                busStationNo,
-                busStationName,
+              navigation.navigate("HomeScreen", {
+                busId,
+                busCarRegNo,
               })
             }
           >
@@ -91,9 +91,9 @@ export default ({ navigation }) => {
             disabled={true}
             style={styles.submitButton}
             onPress={() =>
-              navigation.navigate("저상버스도착현황", {
-                busStationNo,
-                busStationName,
+              navigation.navigate("HomeScreen", {
+                busId,
+                busCarRegNo,
               })
             }
           >
