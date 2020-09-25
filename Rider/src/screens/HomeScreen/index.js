@@ -5,11 +5,21 @@ import {
   Text,
   Dimensions,
   TouchableOpacity,
+  CheckBox,
 } from "react-native";
 import { useQuery } from "react-apollo-hooks";
-import { RESERVATION_LIST_QUERY } from "../Queries";
+import {
+  RESERVATION_LIST_QUERY,
+  BUS_INFO_SEAT1_EDIT_QUERY,
+  BUS_INFO_SEAT2_EDIT_QUERY,
+} from "../Queries";
+import { useMutation } from "react-apollo-hooks";
 
 export default ({ route }) => {
+  const [busInfoSeat1EditMutation] = useMutation(BUS_INFO_SEAT1_EDIT_QUERY);
+  const [busInfoSeat2EditMutation] = useMutation(BUS_INFO_SEAT2_EDIT_QUERY);
+  const [seat1, setSeat1] = useState(false);
+  const [seat2, setSeat2] = useState(false);
   const CAR_REG_NO = route.params ? route.params.busCarRegNo : null;
   const { data, loading } = useQuery(RESERVATION_LIST_QUERY, {
     fetchPolicy: "network-only",
@@ -17,101 +27,87 @@ export default ({ route }) => {
       CAR_REG_NO: CAR_REG_NO,
     },
   });
-  console.log(data);
-  return (
-    <View>
-      <Text>hiqweqweqweqwewq</Text>
-      <Text>hiqweqweqweqwewq</Text>
-      <Text>hiqweqweqweqwewq</Text>
-      <Text>hiqweqweqweqwewq</Text>
-      <Text>hiqweqweqweqwewq</Text>
-    </View>
-  );
+  const seat1Change = async () => {
+    setSeat1(!seat1);
+
+    const {
+      data: { RiderBusInfoSeat1Edit },
+    } = await busInfoSeat1EditMutation({
+      variables: {
+        SEAT1: seat1,
+        CAR_REG_NO: CAR_REG_NO,
+      },
+    });
+  };
+  const seat2Change = async () => {
+    setSeat2(!seat2);
+
+    const {
+      data: { RiderBusInfoSeat2Edit },
+    } = await busInfoSeat2EditMutation({
+      variables: {
+        SEAT2: seat2,
+        CAR_REG_NO: CAR_REG_NO,
+      },
+    });
+  };
+
+  if (loading) {
+    return <Text>승차알림 데이터를 로딩중입니다.</Text>;
+  } else {
+    return (
+      <View>
+        {data.RiderReservationList.reservations.map((rowData, index) => {
+          return (
+            <View key={index}>
+              <Text>승차 정류장 : {rowData.departureStation}</Text>
+              <Text>하차 정류장 : {rowData.arrivalStation}</Text>
+              <Text>보조장비 : {rowData.equipment}</Text>
+            </View>
+          );
+        })}
+        <View>
+          <CheckBox
+            index="1"
+            value={seat1}
+            onValueChange={() => {
+              seat1Change();
+            }}
+            style={styles.checkbox}
+          />
+          <Text style={styles.label}>좌석1</Text>
+        </View>
+
+        <View>
+          <CheckBox
+            index="2"
+            value={seat2}
+            onValueChange={() => {
+              seat2Change();
+            }}
+            style={styles.checkbox}
+          />
+          <Text style={styles.label}>좌석2</Text>
+        </View>
+      </View>
+    );
+  }
 };
 
 const styles = StyleSheet.create({
-  textStyle: {
-    fontSize: 16,
-    alignSelf: "center",
-    padding: 5,
-  },
-  button: {
-    width: 80,
-    paddingHorizontal: 12,
-    alignItems: "center",
-    marginHorizontal: 10,
-  },
-  buttonContainer: {
-    flexDirection: "row",
-    marginVertical: 20,
-    backgroundColor: "transparent",
-    justifyContent: "center",
-  },
-  viewStyle: {
-    width: 200,
-    height: 250,
-    backgroundColor: "#fff",
-    padding: 20,
-  },
-  headerViewStyle: {
-    justifyContent: "center",
-    alignItems: "center",
-    height: 60,
-    backgroundColor: "#f5f5f5",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-    elevation: 3,
-    position: "relative",
-  },
-  headerStyle: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  modalContainerViewStyle: {
-    flex: 1,
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#00000080",
-  },
-  modalViewStyle: {
-    width: 300,
-    height: 380,
-    backgroundColor: "#fff",
-    padding: 20,
-  },
   container: {
     flex: 1,
     alignItems: "center",
+    justifyContent: "center",
   },
-  container2: {
-    flex: 1,
-    alignItems: "center",
-  },
-  map: {
-    ...StyleSheet.absoluteFillObject,
-  },
-  bubble: {
-    backgroundColor: "rgba(255,255,255,0.7)",
-    paddingHorizontal: 18,
-    paddingVertical: 12,
-    borderRadius: 20,
-  },
-  latlng: {
-    width: 200,
-    alignItems: "stretch",
-  },
-  button: {
-    width: 80,
-    paddingHorizontal: 12,
-    alignItems: "center",
-    marginHorizontal: 10,
-  },
-  buttonContainer: {
+  checkboxContainer: {
     flexDirection: "row",
-    marginVertical: 20,
-    backgroundColor: "transparent",
+    marginBottom: 20,
+  },
+  checkbox: {
+    alignSelf: "center",
+  },
+  label: {
+    margin: 8,
   },
 });
