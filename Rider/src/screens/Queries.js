@@ -24,6 +24,18 @@ export const BUS_INFO_SEAT2_EDIT_QUERY = gql`
   }
 `;
 
+export const BUS_INFO_DEVICETOKEN_EDIT_QUERY = gql`
+  mutation RiderBusInfoDeviceTokenEdit(
+    $CAR_REG_NO: String!
+    $deviceToken: String
+  ) {
+    RiderBusInfoDeviceTokenEdit(
+      CAR_REG_NO: $CAR_REG_NO
+      deviceToken: $deviceToken
+    )
+  }
+`;
+
 // Reservation
 export const RESERVATION_LIST_QUERY = gql`
   query RiderReservationList(

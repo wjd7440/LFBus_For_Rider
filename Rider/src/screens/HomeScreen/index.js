@@ -7,15 +7,63 @@ import {
   TouchableOpacity,
   CheckBox,
 } from "react-native";
+
+import { Notifications } from "expo";
+import * as Permissions from "expo-permissions";
 import { useQuery } from "react-apollo-hooks";
 import {
   RESERVATION_LIST_QUERY,
   BUS_INFO_SEAT1_EDIT_QUERY,
   BUS_INFO_SEAT2_EDIT_QUERY,
+  BUS_INFO_DEVICETOKEN_EDIT_QUERY,
 } from "../Queries";
 import { useMutation } from "react-apollo-hooks";
 
 export default ({ route }) => {
+  const [busInfoDeviceTokenEditMutation] = useMutation(
+    BUS_INFO_DEVICETOKEN_EDIT_QUERY
+  );
+
+  useEffect(() => {
+    getPushNotificationPermissions();
+  }, []);
+
+  const getPushNotificationPermissions = async () => {
+    const { status: existingStatus } = await Permissions.getAsync(
+      Permissions.NOTIFICATIONS
+    );
+    let finalStatus = existingStatus;
+
+    // only ask if permissions have not already been determined, because
+    // iOS won't necessarily prompt the user a second time.
+    if (existingStatus !== "granted") {
+      // Android remote notification permissions are granted during the app
+      // install, so this will only ask on iOS
+      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+      finalStatus = status;
+    }
+
+    // Stop here if the user did not grant permissions
+    if (finalStatus !== "granted") {
+      return;
+    }
+    console.log(finalStatus);
+
+    // Get the token that uniquely identifies this device
+    console.log(
+      "Notification Token: ",
+      await Notifications.getExpoPushTokenAsync()
+    );
+    const {
+      data: { RiderBusInfoDeviceTokenEdit },
+    } = await busInfoDeviceTokenEditMutation({
+      variables: {
+        deviceToken: await Notifications.getExpoPushTokenAsync(),
+        CAR_REG_NO: CAR_REG_NO,
+      },
+    });
+  };
+
   const [busInfoSeat1EditMutation] = useMutation(BUS_INFO_SEAT1_EDIT_QUERY);
   const [busInfoSeat2EditMutation] = useMutation(BUS_INFO_SEAT2_EDIT_QUERY);
   const [seat1, setSeat1] = useState(false);
