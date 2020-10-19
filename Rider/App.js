@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { AsyncStorage } from "react-native";
 import Storage from "react-native-expire-storage";
 import ApolloClient from "apollo-client";
@@ -19,11 +19,25 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import LoginScreen from "./src/screens/LoginScreen/index";
 
+import * as Notifications from "expo-notifications";
+import * as Permissions from "expo-permissions";
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
+});
+
 const Stack = createStackNavigator();
 
 export default function App() {
   const [loaded, setLoaded] = useState(false);
   const [client, setClient] = useState(null);
+
+  const notificationListener = useRef();
+  const responseListener = useRef();
 
   const authLink = setContext(async (_, { headers }) => {
     const token = await Storage.getItem("jwt");
@@ -34,6 +48,17 @@ export default function App() {
       },
     };
   });
+
+  const getPermissionsAsync = async () => {
+    const { status: existingStatus } = await Permissions.getAsync(
+      Permissions.NOTIFICATIONS
+    );
+
+    if (existingStatus !== "granted") {
+      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+      finalStatus = status;
+    }
+  };
 
   const preLoad = async () => {
     try {
@@ -48,6 +73,8 @@ export default function App() {
       });
       setLoaded(true);
       setClient(client);
+
+      getPermissionsAsync();
     } catch (e) {
       console.log(e);
     }
@@ -55,6 +82,27 @@ export default function App() {
 
   useEffect(() => {
     preLoad();
+
+    notificationListener.current = Notifications.addNotificationReceivedListener(
+      (notification) => {
+        console.log("notification");
+        console.log(notification);
+        console.log("notification");
+      }
+    );
+
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(
+      (response) => {
+        console.log("response");
+        console.log(response);
+        console.log("response");
+      }
+    );
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener);
+      Notifications.removeNotificationSubscription(responseListener);
+    };
   }, []);
 
   return (
