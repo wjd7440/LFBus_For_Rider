@@ -5,6 +5,7 @@ import {
   Text,
   Dimensions,
   TouchableOpacity,
+  ScrollView,
   CheckBox,
 } from "react-native";
 
@@ -18,6 +19,8 @@ import {
   BUS_INFO_DEVICETOKEN_EDIT_QUERY,
 } from "../Queries";
 import { useMutation } from "react-apollo-hooks";
+import style from "../../../constants/style";
+import { DataTable } from "react-native-paper";
 
 export default ({ route }) => {
   const [busInfoDeviceTokenEditMutation] = useMutation(
@@ -104,7 +107,7 @@ export default ({ route }) => {
     return <Text>승차알림 데이터를 로딩중입니다.</Text>;
   } else {
     return (
-      <View>
+      <View style={styles.container}>
         {data.RiderReservationList.reservations.map((rowData, index) => {
           return (
             <View key={index}>
@@ -137,17 +140,32 @@ export default ({ route }) => {
           />
           <Text style={styles.label}>좌석2</Text>
         </View>
+
+        <View>
+          <ScrollView>
+            <DataTable>
+              <DataTable.Header>
+                <DataTable.Title>번호</DataTable.Title>
+                <DataTable.Title>승차</DataTable.Title>
+                <DataTable.Title>하차</DataTable.Title>
+                <DataTable.Title>보조기구</DataTable.Title>
+                <DataTable.Title>필요한 도움</DataTable.Title>
+              </DataTable.Header>
+              <DataTable.Row>
+                <DataTable.Cell>1</DataTable.Cell>
+                <DataTable.Cell>월평역</DataTable.Cell>
+                <DataTable.Cell>6.0</DataTable.Cell>
+              </DataTable.Row>
+            </DataTable>
+          </ScrollView>
+        </View>
       </View>
     );
   }
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
+  ...style,
   checkboxContainer: {
     flexDirection: "row",
     marginBottom: 20,

@@ -11,7 +11,6 @@ import {
 } from "react-native";
 
 export default ({ navigation }) => {
-  console.log("afdfdfdfsd")
   const [busId, setBusId] = useState(null);
   const [busCarRegNo, setBusCarRegNo] = useState(null);
   const [items, setItemsArray] = useState([]);
@@ -88,19 +87,19 @@ export default ({ navigation }) => {
             <Text style={styles.submitButtonText}>검색</Text>
           </TouchableOpacity>
         ) : (
-            <TouchableOpacity
-              disabled={true}
-              style={styles.submitButton}
-              onPress={() =>
-                navigation.navigate("HomeScreen", {
-                  busId,
-                  busCarRegNo,
-                })
-              }
-            >
-              <Text style={styles.submitButtonText}>검색</Text>
-            </TouchableOpacity>
-          )}
+          <TouchableOpacity
+            disabled={true}
+            style={styles.submitButton}
+            onPress={() =>
+              navigation.navigate("HomeScreen", {
+                busId,
+                busCarRegNo,
+              })
+            }
+          >
+            <Text style={styles.submitButtonText}>검색</Text>
+          </TouchableOpacity>
+        )}
       </Fragment>
     );
   }

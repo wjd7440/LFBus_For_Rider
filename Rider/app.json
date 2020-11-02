@@ -3,7 +3,7 @@
     "name": "Rider",
     "slug": "Rider",
     "version": "1.0.0",
-    "orientation": "portrait",
+    "orientation": "default", // landscape 가로모드, portrait 세로 모드, default 가로/세로
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
@@ -26,3 +26,5 @@
     }
   }
 }
+
+
