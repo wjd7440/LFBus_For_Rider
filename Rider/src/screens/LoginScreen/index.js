@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
   StyleSheet,
   StatusBar,
+  ActivityIndicator,
+  SafeAreaView,
 } from "react-native";
 
 export default ({ navigation }) => {
@@ -34,73 +36,84 @@ export default ({ navigation }) => {
   }, [loading]);
 
   if (loading) {
-    return <Text>Loading......</Text>;
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color="#4B56F1" />
+      </View>
+    );
   } else {
     return (
-      <Fragment>
-        <SearchableDropdown
-          multi={true}
-          containerStyle={{ padding: 15 }}
-          onItemSelect={(item) => {
-            setBusId(item.id);
-            setBusCarRegNo(item.name);
-          }}
-          itemStyle={{
-            padding: 10,
-            marginTop: 2,
-            backgroundColor: "#ddd",
-            borderColor: "#bbb",
-            borderWidth: 1,
-            borderRadius: 5,
-          }}
-          itemTextStyle={{ color: "#222", fontSize: 16 }}
-          itemsContainerStyle={{ maxHeight: 216 }}
-          items={items}
-          defaultIndex={0}
-          chip={true}
-          resetValue={false}
-          textInputProps={{
-            placeholder: "버스정류장을 검색해주세요.",
-            underlineColorAndroid: "transparent",
-            style: {
-              padding: 12,
-              borderWidth: 1,
-              borderColor: "#ccc",
-              borderRadius: 5,
-              backgroundColor: "#fff",
-            },
-          }}
-          listProps={{
-            nestedScrollEnabled: true,
-          }}
+      <SafeAreaView>
+        <StatusBar
+          barStyle={"dark-content"}
+          backgroundColor={"transparent"}
+          translucent={false}
         />
-        {busCarRegNo ? (
-          <TouchableOpacity
-            style={styles.submitButton}
-            onPress={() =>
-              navigation.navigate("HomeScreen", {
-                busId,
-                busCarRegNo,
-              })
-            }
-          >
-            <Text style={styles.submitButtonText}>검색</Text>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity
-            disabled={true}
-            style={styles.submitButton}
-            onPress={() =>
-              navigation.navigate("HomeScreen", {
-                busId,
-                busCarRegNo,
-              })
-            }
-          >
-            <Text style={styles.submitButtonText}>검색</Text>
-          </TouchableOpacity>
-        )}
-      </Fragment>
+        <Fragment>
+          <SearchableDropdown
+            multi={true}
+            containerStyle={{ padding: 15 }}
+            onItemSelect={(item) => {
+              setBusId(item.id);
+              setBusCarRegNo(item.name);
+            }}
+            itemStyle={{
+              padding: 10,
+              marginTop: 2,
+              backgroundColor: "#ddd",
+              borderColor: "#bbb",
+              borderWidth: 1,
+              borderRadius: 5,
+            }}
+            itemTextStyle={{ color: "#222", fontSize: 16 }}
+            itemsContainerStyle={{ maxHeight: 216 }}
+            items={items}
+            defaultIndex={0}
+            chip={true}
+            resetValue={false}
+            textInputProps={{
+              placeholder: "버스정류장을 검색해주세요.",
+              underlineColorAndroid: "transparent",
+              style: {
+                padding: 12,
+                borderWidth: 1,
+                borderColor: "#ccc",
+                borderRadius: 5,
+                backgroundColor: "#fff",
+              },
+            }}
+            listProps={{
+              nestedScrollEnabled: true,
+            }}
+          />
+          {busCarRegNo ? (
+            <TouchableOpacity
+              style={styles.submitButton}
+              onPress={() =>
+                navigation.navigate("HomeScreen", {
+                  busId,
+                  busCarRegNo,
+                })
+              }
+            >
+              <Text style={styles.submitButtonText}>검색</Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              disabled={true}
+              style={styles.submitButton}
+              onPress={() =>
+                navigation.navigate("HomeScreen", {
+                  busId,
+                  busCarRegNo,
+                })
+              }
+            >
+              <Text style={styles.submitButtonText}>검색</Text>
+            </TouchableOpacity>
+          )}
+        </Fragment>
+      </SafeAreaView>
     );
   }
 };
