@@ -10,6 +10,8 @@ import {
   StatusBar,
   ActivityIndicator,
   SafeAreaView,
+  KeyboardAvoidingView,
+  Image,
 } from "react-native";
 
 export default ({ navigation }) => {
@@ -43,76 +45,96 @@ export default ({ navigation }) => {
     );
   } else {
     return (
-      <SafeAreaView>
+      <SafeAreaView style={{ flex: 1 }}>
         <StatusBar
           barStyle={"dark-content"}
           backgroundColor={"transparent"}
           translucent={false}
         />
-        <Fragment>
-          <SearchableDropdown
-            multi={true}
-            containerStyle={{ padding: 15 }}
-            onItemSelect={(item) => {
-              setBusId(item.id);
-              setBusCarRegNo(item.name);
-            }}
-            itemStyle={{
-              padding: 10,
-              marginTop: 2,
-              backgroundColor: "#ddd",
-              borderColor: "#bbb",
-              borderWidth: 1,
-              borderRadius: 5,
-            }}
-            itemTextStyle={{ color: "#222", fontSize: 16 }}
-            itemsContainerStyle={{ maxHeight: 216 }}
-            items={items}
-            defaultIndex={0}
-            chip={true}
-            resetValue={false}
-            textInputProps={{
-              placeholder: "버스정류장을 검색해주세요.",
-              underlineColorAndroid: "transparent",
-              style: {
-                padding: 12,
+        <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
+          <View style={styles.logoBox}>
+            <Image
+              style={styles.loginLogo}
+              source={require("../../../assets/logo.png")}
+            />
+            <Text
+              style={{
+                fontSize: 15,
+                marginTop: -8,
+                fontWeight: "bold",
+                color: "#4b56f1",
+              }}
+            >
+              버스기사용
+            </Text>
+          </View>
+
+          <Fragment>
+            <SearchableDropdown
+              multi={true}
+              containerStyle={{ padding: 15 }}
+              onItemSelect={(item) => {
+                setBusId(item.id);
+                setBusCarRegNo(item.name);
+              }}
+              itemStyle={{
+                padding: 10,
+                marginTop: 2,
+                backgroundColor: "#ddd",
+                borderColor: "#bbb",
                 borderWidth: 1,
-                borderColor: "#ccc",
                 borderRadius: 5,
-                backgroundColor: "#fff",
-              },
-            }}
-            listProps={{
-              nestedScrollEnabled: true,
-            }}
-          />
-          {busCarRegNo ? (
-            <TouchableOpacity
-              style={styles.submitButton}
-              onPress={() =>
-                navigation.navigate("HomeScreen", {
-                  busId,
-                  busCarRegNo,
-                })
-              }
-            >
-              <Text style={styles.submitButtonText}>검색</Text>
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity
-              disabled={true}
-              style={styles.submitButton}
-              onPress={() =>
-                navigation.navigate("HomeScreen", {
-                  busId,
-                  busCarRegNo,
-                })
-              }
-            >
-              <Text style={styles.submitButtonText}>검색</Text>
-            </TouchableOpacity>
-          )}
-        </Fragment>
+              }}
+              itemTextStyle={{ color: "#222", fontSize: 18 }}
+              itemsContainerStyle={{ maxHeight: 216 }}
+              items={items}
+              defaultIndex={0}
+              chip={true}
+              resetValue={false}
+              textInputProps={{
+                placeholder: "버스정류장을 검색해주세요.",
+                underlineColorAndroid: "transparent",
+                style: {
+                  padding: 12,
+                  borderWidth: 1,
+                  borderColor: "#ccc",
+                  borderRadius: 5,
+                  backgroundColor: "#fff",
+                  fontSize: 18,
+                },
+              }}
+              listProps={{
+                nestedScrollEnabled: true,
+              }}
+            />
+            {busCarRegNo ? (
+              <TouchableOpacity
+                style={styles.submitButton}
+                onPress={() =>
+                  navigation.navigate("HomeScreen", {
+                    busId,
+                    busCarRegNo,
+                  })
+                }
+              >
+                <Text style={styles.submitButtonText}>검색</Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                disabled={true}
+                style={styles.submitButton}
+                onPress={() =>
+                  navigation.navigate("HomeScreen", {
+                    busId,
+                    busCarRegNo,
+                  })
+                }
+              >
+                <Text style={styles.submitButtonText}>검색</Text>
+              </TouchableOpacity>
+            )}
+          </Fragment>
+        </KeyboardAvoidingView>
       </SafeAreaView>
     );
   }
@@ -125,11 +147,11 @@ const styles = StyleSheet.create({
   input: {
     margin: 15,
     height: 40,
-    borderColor: "#7a42f4",
+    borderColor: "#4B56F1",
     borderWidth: 1,
   },
   submitButton: {
-    backgroundColor: "#7a42f4",
+    backgroundColor: "#4B56F1",
     padding: 10,
     margin: 15,
     marginTop: 5,
@@ -142,5 +164,15 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 18,
     fontWeight: "bold",
+  },
+  logoBox: {
+    justifyContent: "center",
+    alignItems: "center",
+    paddingTop: 30,
+    paddingBottom: 10,
+  },
+  loginLogo: {
+    width: 180,
+    resizeMode: "contain",
   },
 });
