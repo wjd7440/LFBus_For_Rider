@@ -40,8 +40,8 @@ export default ({ route }) => {
 
   useEffect(() => {
     getPushNotificationPermissions();
-    setSeat1(true);
-    setSeat2(true);
+    seat1Login();
+    seat2Login();
   }, []);
 
   const getPushNotificationPermissions = async () => {
@@ -112,6 +112,29 @@ export default ({ route }) => {
     } = await busInfoSeat2EditMutation({
       variables: {
         SEAT2: seat2,
+        CAR_REG_NO: CAR_REG_NO,
+      },
+    });
+  };
+
+  const seat1Login = async () => {
+
+    const {
+      data: { RiderBusInfoSeat1Edit },
+    } = await busInfoSeat1EditMutation({
+      variables: {
+        SEAT1: true,
+        CAR_REG_NO: CAR_REG_NO,
+      },
+    });
+  };
+  const seat2Login = async () => {
+
+    const {
+      data: { RiderBusInfoSeat2Edit },
+    } = await busInfoSeat2EditMutation({
+      variables: {
+        SEAT2: true,
         CAR_REG_NO: CAR_REG_NO,
       },
     });
