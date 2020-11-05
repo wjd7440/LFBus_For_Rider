@@ -40,8 +40,6 @@ export default ({ route }) => {
 
   useEffect(() => {
     getPushNotificationPermissions();
-    seat1Login();
-    seat2Login();
   }, []);
 
   const getPushNotificationPermissions = async () => {
@@ -117,29 +115,6 @@ export default ({ route }) => {
     });
   };
 
-  const seat1Login = async () => {
-
-    const {
-      data: { RiderBusInfoSeat1Edit },
-    } = await busInfoSeat1EditMutation({
-      variables: {
-        SEAT1: true,
-        CAR_REG_NO: CAR_REG_NO,
-      },
-    });
-  };
-  const seat2Login = async () => {
-
-    const {
-      data: { RiderBusInfoSeat2Edit },
-    } = await busInfoSeat2EditMutation({
-      variables: {
-        SEAT2: true,
-        CAR_REG_NO: CAR_REG_NO,
-      },
-    });
-  };
-
   if (loading || data.RiderReservationList.count < 1) {
     return (
       <SafeAreaView style={{ flex: 1 }}>
@@ -169,22 +144,22 @@ export default ({ route }) => {
                   style={
                     seat1
                       ? {
-                        ...styles.onCheckbox,
-                      }
+                          ...styles.onCheckbox,
+                        }
                       : {
-                        ...styles.checkbox,
-                      }
+                          ...styles.checkbox,
+                        }
                   }
                 />
                 <Text
                   style={
                     seat1
                       ? {
-                        ...styles.onLabel,
-                      }
+                          ...styles.onLabel,
+                        }
                       : {
-                        ...styles.label,
-                      }
+                          ...styles.label,
+                        }
                   }
                 >
                   좌석1
@@ -202,22 +177,22 @@ export default ({ route }) => {
                   style={
                     seat2
                       ? {
-                        ...styles.onCheckbox,
-                      }
+                          ...styles.onCheckbox,
+                        }
                       : {
-                        ...styles.checkbox,
-                      }
+                          ...styles.checkbox,
+                        }
                   }
                 />
                 <Text
                   style={
                     seat2
                       ? {
-                        ...styles.onLabel,
-                      }
+                          ...styles.onLabel,
+                        }
                       : {
-                        ...styles.label,
-                      }
+                          ...styles.label,
+                        }
                   }
                 >
                   좌석2
@@ -296,22 +271,22 @@ export default ({ route }) => {
                   style={
                     seat1
                       ? {
-                        ...styles.onCheckbox,
-                      }
+                          ...styles.onCheckbox,
+                        }
                       : {
-                        ...styles.checkbox,
-                      }
+                          ...styles.checkbox,
+                        }
                   }
                 />
                 <Text
                   style={
                     seat1
                       ? {
-                        ...styles.onLabel,
-                      }
+                          ...styles.onLabel,
+                        }
                       : {
-                        ...styles.label,
-                      }
+                          ...styles.label,
+                        }
                   }
                 >
                   좌석1
@@ -329,22 +304,22 @@ export default ({ route }) => {
                   style={
                     seat2
                       ? {
-                        ...styles.onCheckbox,
-                      }
+                          ...styles.onCheckbox,
+                        }
                       : {
-                        ...styles.checkbox,
-                      }
+                          ...styles.checkbox,
+                        }
                   }
                 />
                 <Text
                   style={
                     seat2
                       ? {
-                        ...styles.onLabel,
-                      }
+                          ...styles.onLabel,
+                        }
                       : {
-                        ...styles.label,
-                      }
+                          ...styles.label,
+                        }
                   }
                 >
                   좌석2
@@ -353,80 +328,74 @@ export default ({ route }) => {
             </View>
           </View>
 
-          {/* <View>
-            <ScrollView>
-              <DataTable>
-                <DataTable.Header>
-                  <DataTable.Title>번호</DataTable.Title>
-                  <DataTable.Title>승차</DataTable.Title>
-                  <DataTable.Title>하차</DataTable.Title>
-                  <DataTable.Title>보조기구</DataTable.Title>
-                  <DataTable.Title>필요한 도움</DataTable.Title>
-                </DataTable.Header>
-                <DataTable.Row>
-                  <DataTable.Cell>1</DataTable.Cell>
-                  <DataTable.Cell>월평역</DataTable.Cell>
-                  <DataTable.Cell>6.0</DataTable.Cell>
-                </DataTable.Row>
-              </DataTable>
-            </ScrollView>
-          </View> */}
-        </View>
-        <View style={{ flex: 1 }}>
-          <View style={{ marginBottom: 10 }}>
-            <Text style={{ fontSize: 21, color: "#111", fontWeight: "bold" }}>
-              예약자 현황
-            </Text>
-          </View>
+          <View style={{ flex: 1 }}>
+            <View style={{ marginBottom: 10 }}>
+              <Text style={{ fontSize: 21, color: "#111", fontWeight: "bold" }}>
+                예약자 현황
+              </Text>
+            </View>
 
-          <DataTable style={{ borderWidth: 1, borderColor: "#ddd", flex: 1 }}>
-            <DataTable.Header style={styles.tableHeader}>
-              <DataTable.Title style={[styles.tableTh, styles.tableCell1]}>
-                <Text style={styles.tableThTxt}>번호</Text>
-              </DataTable.Title>
-              <DataTable.Title style={[styles.tableTh, styles.tableCell2]}>
-                <Text style={styles.tableThTxt}>승차</Text>
-              </DataTable.Title>
-              <DataTable.Title style={[styles.tableTh, styles.tableCell3]}>
-                <Text style={styles.tableThTxt}>하차</Text>
-              </DataTable.Title>
-              <DataTable.Title style={[styles.tableTh, styles.tableCell4]}>
-                <Text style={styles.tableThTxt}>보조기구</Text>
-              </DataTable.Title>
-              <DataTable.Title style={[styles.tableTh, styles.tableCell5]}>
-                <Text style={styles.tableThTxt}>필요한 도움</Text>
-              </DataTable.Title>
-            </DataTable.Header>
-            <ScrollView>
-              {data.RiderReservationList.reservations.map((rowData, index) => {
-                return (
-                  <DataTable.Row style={styles.tableRow} key={index}>
-                    <DataTable.Cell style={[styles.tableTd, styles.tableCell1]}>
-                      <Text style={styles.tableTdTxt}>1</Text>
-                    </DataTable.Cell>
-                    <DataTable.Cell style={[styles.tableTd, styles.tableCell2]}>
-                      <Text style={styles.tableTdTxt}>
-                        {rowData.departureStation}
-                      </Text>
-                    </DataTable.Cell>
-                    <DataTable.Cell style={[styles.tableTd, styles.tableCell3]}>
-                      <Text style={styles.tableTdTxt}>
-                        {rowData.arrivalStation}
-                      </Text>
-                    </DataTable.Cell>
-                    <DataTable.Cell style={[styles.tableTd, styles.tableCell4]}>
-                      <Text style={styles.tableTdTxt}>{rowData.equipment}</Text>
-                    </DataTable.Cell>
-                    <DataTable.Cell style={[styles.tableTd, styles.tableCell5]}>
-                      <Text style={styles.tableTdTxt}>
-                        {rowData.memo}
-                      </Text>
-                    </DataTable.Cell>
-                  </DataTable.Row>
-                );
-              })}
-            </ScrollView>
-          </DataTable>
+            <DataTable style={{ borderWidth: 1, borderColor: "#ddd", flex: 1 }}>
+              <DataTable.Header style={styles.tableHeader}>
+                <DataTable.Title style={[styles.tableTh, styles.tableCell1]}>
+                  <Text style={styles.tableThTxt}>번호</Text>
+                </DataTable.Title>
+                <DataTable.Title style={[styles.tableTh, styles.tableCell2]}>
+                  <Text style={styles.tableThTxt}>승차</Text>
+                </DataTable.Title>
+                <DataTable.Title style={[styles.tableTh, styles.tableCell3]}>
+                  <Text style={styles.tableThTxt}>하차</Text>
+                </DataTable.Title>
+                <DataTable.Title style={[styles.tableTh, styles.tableCell4]}>
+                  <Text style={styles.tableThTxt}>보조기구</Text>
+                </DataTable.Title>
+                <DataTable.Title style={[styles.tableTh, styles.tableCell5]}>
+                  <Text style={styles.tableThTxt}>필요한 도움</Text>
+                </DataTable.Title>
+              </DataTable.Header>
+              <ScrollView>
+                {data.RiderReservationList.reservations.map(
+                  (rowData, index) => {
+                    return (
+                      <DataTable.Row style={styles.tableRow} key={index}>
+                        <DataTable.Cell
+                          style={[styles.tableTd, styles.tableCell1]}
+                        >
+                          <Text style={styles.tableTdTxt}>1</Text>
+                        </DataTable.Cell>
+                        <DataTable.Cell
+                          style={[styles.tableTd, styles.tableCell2]}
+                        >
+                          <Text style={styles.tableTdTxt}>
+                            {rowData.departureStation}
+                          </Text>
+                        </DataTable.Cell>
+                        <DataTable.Cell
+                          style={[styles.tableTd, styles.tableCell3]}
+                        >
+                          <Text style={styles.tableTdTxt}>
+                            {rowData.arrivalStation}
+                          </Text>
+                        </DataTable.Cell>
+                        <DataTable.Cell
+                          style={[styles.tableTd, styles.tableCell4]}
+                        >
+                          <Text style={styles.tableTdTxt}>
+                            {rowData.equipment}
+                          </Text>
+                        </DataTable.Cell>
+                        <DataTable.Cell
+                          style={[styles.tableTd, styles.tableCell5]}
+                        >
+                          <Text style={styles.tableTdTxt}>{rowData.memo}</Text>
+                        </DataTable.Cell>
+                      </DataTable.Row>
+                    );
+                  }
+                )}
+              </ScrollView>
+            </DataTable>
+          </View>
         </View>
       </SafeAreaView>
     );
