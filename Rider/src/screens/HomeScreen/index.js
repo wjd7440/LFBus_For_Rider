@@ -89,6 +89,7 @@ export default ({ route }) => {
       CAR_REG_NO: CAR_REG_NO,
     },
   });
+
   const seat1Change = async () => {
     setSeat1(!seat1);
 
@@ -114,7 +115,6 @@ export default ({ route }) => {
     });
   };
 
-  console.log(!loading && data);
   if (loading || data.RiderReservationList.count < 1) {
     return (
       <SafeAreaView style={{ flex: 1 }}>
@@ -144,22 +144,22 @@ export default ({ route }) => {
                   style={
                     seat1
                       ? {
-                          ...styles.onCheckbox,
-                        }
+                        ...styles.onCheckbox,
+                      }
                       : {
-                          ...styles.checkbox,
-                        }
+                        ...styles.checkbox,
+                      }
                   }
                 />
                 <Text
                   style={
                     seat1
                       ? {
-                          ...styles.onLabel,
-                        }
+                        ...styles.onLabel,
+                      }
                       : {
-                          ...styles.label,
-                        }
+                        ...styles.label,
+                      }
                   }
                 >
                   좌석1
@@ -177,22 +177,22 @@ export default ({ route }) => {
                   style={
                     seat2
                       ? {
-                          ...styles.onCheckbox,
-                        }
+                        ...styles.onCheckbox,
+                      }
                       : {
-                          ...styles.checkbox,
-                        }
+                        ...styles.checkbox,
+                      }
                   }
                 />
                 <Text
                   style={
                     seat2
                       ? {
-                          ...styles.onLabel,
-                        }
+                        ...styles.onLabel,
+                      }
                       : {
-                          ...styles.label,
-                        }
+                        ...styles.label,
+                      }
                   }
                 >
                   좌석2
@@ -271,22 +271,22 @@ export default ({ route }) => {
                   style={
                     seat1
                       ? {
-                          ...styles.onCheckbox,
-                        }
+                        ...styles.onCheckbox,
+                      }
                       : {
-                          ...styles.checkbox,
-                        }
+                        ...styles.checkbox,
+                      }
                   }
                 />
                 <Text
                   style={
                     seat1
                       ? {
-                          ...styles.onLabel,
-                        }
+                        ...styles.onLabel,
+                      }
                       : {
-                          ...styles.label,
-                        }
+                        ...styles.label,
+                      }
                   }
                 >
                   좌석1
@@ -304,22 +304,22 @@ export default ({ route }) => {
                   style={
                     seat2
                       ? {
-                          ...styles.onCheckbox,
-                        }
+                        ...styles.onCheckbox,
+                      }
                       : {
-                          ...styles.checkbox,
-                        }
+                        ...styles.checkbox,
+                      }
                   }
                 />
                 <Text
                   style={
                     seat2
                       ? {
-                          ...styles.onLabel,
-                        }
+                        ...styles.onLabel,
+                      }
                       : {
-                          ...styles.label,
-                        }
+                        ...styles.label,
+                      }
                   }
                 >
                   좌석2
@@ -328,7 +328,7 @@ export default ({ route }) => {
             </View>
           </View>
 
-          <View>
+          {/* <View>
             <ScrollView>
               <DataTable>
                 <DataTable.Header>
@@ -345,7 +345,7 @@ export default ({ route }) => {
                 </DataTable.Row>
               </DataTable>
             </ScrollView>
-          </View>
+          </View> */}
         </View>
         <View style={{ flex: 1 }}>
           <View style={{ marginBottom: 10 }}>
@@ -394,8 +394,7 @@ export default ({ route }) => {
                     </DataTable.Cell>
                     <DataTable.Cell style={[styles.tableTd, styles.tableCell5]}>
                       <Text style={styles.tableTdTxt}>
-                        하차태그를 찍어주세요. 부탁드립니다. 하차태그를
-                        찍어주세요. 부탁드립니다.
+                        {rowData.memo}
                       </Text>
                     </DataTable.Cell>
                   </DataTable.Row>

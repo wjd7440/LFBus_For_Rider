@@ -59,6 +59,7 @@ export const RESERVATION_LIST_QUERY = gql`
         departureStation
         arrivalStation
         equipment
+        equipmentName
         memo
       }
       count
