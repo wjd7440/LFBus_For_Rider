@@ -40,6 +40,8 @@ export default ({ route }) => {
 
   useEffect(() => {
     getPushNotificationPermissions();
+    setSeat1(true);
+    setSeat2(true);
   }, []);
 
   const getPushNotificationPermissions = async () => {
