@@ -144,22 +144,22 @@ export default ({ route }) => {
                   style={
                     seat1
                       ? {
-                          ...styles.onCheckbox,
-                        }
+                        ...styles.onCheckbox,
+                      }
                       : {
-                          ...styles.checkbox,
-                        }
+                        ...styles.checkbox,
+                      }
                   }
                 />
                 <Text
                   style={
                     seat1
                       ? {
-                          ...styles.onLabel,
-                        }
+                        ...styles.onLabel,
+                      }
                       : {
-                          ...styles.label,
-                        }
+                        ...styles.label,
+                      }
                   }
                 >
                   좌석1
@@ -177,22 +177,22 @@ export default ({ route }) => {
                   style={
                     seat2
                       ? {
-                          ...styles.onCheckbox,
-                        }
+                        ...styles.onCheckbox,
+                      }
                       : {
-                          ...styles.checkbox,
-                        }
+                        ...styles.checkbox,
+                      }
                   }
                 />
                 <Text
                   style={
                     seat2
                       ? {
-                          ...styles.onLabel,
-                        }
+                        ...styles.onLabel,
+                      }
                       : {
-                          ...styles.label,
-                        }
+                        ...styles.label,
+                      }
                   }
                 >
                   좌석2
@@ -211,7 +211,7 @@ export default ({ route }) => {
             <DataTable style={{ borderWidth: 1, borderColor: "#ddd", flex: 1 }}>
               <DataTable.Header style={styles.tableHeader}>
                 <DataTable.Title style={[styles.tableTh, styles.tableCell1]}>
-                  <Text style={styles.tableThTxt}>번호</Text>
+                  <Text style={styles.tableThTxt}>기능</Text>
                 </DataTable.Title>
                 <DataTable.Title style={[styles.tableTh, styles.tableCell2]}>
                   <Text style={styles.tableThTxt}>승차</Text>
@@ -271,22 +271,22 @@ export default ({ route }) => {
                   style={
                     seat1
                       ? {
-                          ...styles.onCheckbox,
-                        }
+                        ...styles.onCheckbox,
+                      }
                       : {
-                          ...styles.checkbox,
-                        }
+                        ...styles.checkbox,
+                      }
                   }
                 />
                 <Text
                   style={
                     seat1
                       ? {
-                          ...styles.onLabel,
-                        }
+                        ...styles.onLabel,
+                      }
                       : {
-                          ...styles.label,
-                        }
+                        ...styles.label,
+                      }
                   }
                 >
                   좌석1
@@ -304,22 +304,22 @@ export default ({ route }) => {
                   style={
                     seat2
                       ? {
-                          ...styles.onCheckbox,
-                        }
+                        ...styles.onCheckbox,
+                      }
                       : {
-                          ...styles.checkbox,
-                        }
+                        ...styles.checkbox,
+                      }
                   }
                 />
                 <Text
                   style={
                     seat2
                       ? {
-                          ...styles.onLabel,
-                        }
+                        ...styles.onLabel,
+                      }
                       : {
-                          ...styles.label,
-                        }
+                        ...styles.label,
+                      }
                   }
                 >
                   좌석2
@@ -338,7 +338,7 @@ export default ({ route }) => {
             <DataTable style={{ borderWidth: 1, borderColor: "#ddd", flex: 1 }}>
               <DataTable.Header style={styles.tableHeader}>
                 <DataTable.Title style={[styles.tableTh, styles.tableCell1]}>
-                  <Text style={styles.tableThTxt}>번호</Text>
+                  <Text style={styles.tableThTxt}>기능</Text>
                 </DataTable.Title>
                 <DataTable.Title style={[styles.tableTh, styles.tableCell2]}>
                   <Text style={styles.tableThTxt}>승차</Text>
@@ -361,7 +361,7 @@ export default ({ route }) => {
                         <DataTable.Cell
                           style={[styles.tableTd, styles.tableCell1]}
                         >
-                          <Text style={styles.tableTdTxt}>1</Text>
+                          <Text style={styles.tableTdTxt}>하차 완료</Text>
                         </DataTable.Cell>
                         <DataTable.Cell
                           style={[styles.tableTd, styles.tableCell2]}
@@ -381,7 +381,7 @@ export default ({ route }) => {
                           style={[styles.tableTd, styles.tableCell4]}
                         >
                           <Text style={styles.tableTdTxt}>
-                            {rowData.equipment}
+                            {rowData.equipmentName}
                           </Text>
                         </DataTable.Cell>
                         <DataTable.Cell
