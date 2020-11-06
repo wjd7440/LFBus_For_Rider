@@ -40,6 +40,13 @@ export default ({ route }) => {
 
   useEffect(() => {
     getPushNotificationPermissions();
+
+    let timer = setInterval(() => {
+      refetch();
+      console.log("timer")
+    }, 10000);
+
+    return () => clearInterval(timer);
   }, []);
 
   const getPushNotificationPermissions = async () => {
@@ -83,13 +90,12 @@ export default ({ route }) => {
   const [seat1, setSeat1] = useState(false);
   const [seat2, setSeat2] = useState(false);
   const CAR_REG_NO = route.params ? route.params.busCarRegNo : null;
-  const { data, loading } = useQuery(RESERVATION_LIST_QUERY, {
+  const { data, loading, refetch } = useQuery(RESERVATION_LIST_QUERY, {
     fetchPolicy: "network-only",
     variables: {
       CAR_REG_NO: CAR_REG_NO,
     },
   });
-
   const seat1Change = async () => {
     setSeat1(!seat1);
 
@@ -144,22 +150,22 @@ export default ({ route }) => {
                   style={
                     seat1
                       ? {
-                          ...styles.onCheckbox,
-                        }
+                        ...styles.onCheckbox,
+                      }
                       : {
-                          ...styles.checkbox,
-                        }
+                        ...styles.checkbox,
+                      }
                   }
                 />
                 <Text
                   style={
                     seat1
                       ? {
-                          ...styles.onLabel,
-                        }
+                        ...styles.onLabel,
+                      }
                       : {
-                          ...styles.label,
-                        }
+                        ...styles.label,
+                      }
                   }
                 >
                   좌석1
@@ -177,22 +183,22 @@ export default ({ route }) => {
                   style={
                     seat2
                       ? {
-                          ...styles.onCheckbox,
-                        }
+                        ...styles.onCheckbox,
+                      }
                       : {
-                          ...styles.checkbox,
-                        }
+                        ...styles.checkbox,
+                      }
                   }
                 />
                 <Text
                   style={
                     seat2
                       ? {
-                          ...styles.onLabel,
-                        }
+                        ...styles.onLabel,
+                      }
                       : {
-                          ...styles.label,
-                        }
+                        ...styles.label,
+                      }
                   }
                 >
                   좌석2
@@ -271,22 +277,22 @@ export default ({ route }) => {
                   style={
                     seat1
                       ? {
-                          ...styles.onCheckbox,
-                        }
+                        ...styles.onCheckbox,
+                      }
                       : {
-                          ...styles.checkbox,
-                        }
+                        ...styles.checkbox,
+                      }
                   }
                 />
                 <Text
                   style={
                     seat1
                       ? {
-                          ...styles.onLabel,
-                        }
+                        ...styles.onLabel,
+                      }
                       : {
-                          ...styles.label,
-                        }
+                        ...styles.label,
+                      }
                   }
                 >
                   좌석1
@@ -304,22 +310,22 @@ export default ({ route }) => {
                   style={
                     seat2
                       ? {
-                          ...styles.onCheckbox,
-                        }
+                        ...styles.onCheckbox,
+                      }
                       : {
-                          ...styles.checkbox,
-                        }
+                        ...styles.checkbox,
+                      }
                   }
                 />
                 <Text
                   style={
                     seat2
                       ? {
-                          ...styles.onLabel,
-                        }
+                        ...styles.onLabel,
+                      }
                       : {
-                          ...styles.label,
-                        }
+                        ...styles.label,
+                      }
                   }
                 >
                   좌석2
