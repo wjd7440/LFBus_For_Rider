@@ -361,17 +361,7 @@ export default ({ route }) => {
                         <DataTable.Cell
                           style={[styles.tableTd, styles.tableCell1]}
                         >
-                          <Text
-                            style={{
-                              paddingVertical: 8,
-                              paddingHorizontal: 12,
-                              fontSize: 16,
-                              backgroundColor: "red",
-                              color: "#fff",
-                            }}
-                          >
-                            하차 완료
-                          </Text>
+                          <Text style={styles.tableTdTxt}>하차 완료</Text>
                         </DataTable.Cell>
                         <DataTable.Cell
                           style={[styles.tableTd, styles.tableCell2]}
@@ -481,7 +471,7 @@ const styles = StyleSheet.create({
     color: "#333",
   },
   tableTd: {
-    justifyContent: "center",
+    justifyContent: "flex-start",
     // borderWidth: 1,
     paddingHorizontal: 5,
   },
@@ -507,7 +497,7 @@ const styles = StyleSheet.create({
     color: "#676767",
   },
   tableCell1: {
-    flex: 2,
+    flex: 1,
   },
   tableCell2: {
     flex: 3,
