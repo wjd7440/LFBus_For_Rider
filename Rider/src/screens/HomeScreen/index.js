@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Audio } from 'expo-av';
 import {
   StyleSheet,
   View,
@@ -23,6 +24,7 @@ import {
 import { useMutation } from "react-apollo-hooks";
 import style from "../../../constants/style";
 import { DataTable } from "react-native-paper";
+import { Button } from "galio-framework";
 
 export default ({ route }) => {
   const fonts = useFonts({
@@ -34,16 +36,42 @@ export default ({ route }) => {
     "Noto-900": require("../../../assets/fonts/NotoSansKR-Black.otf"),
   });
 
+  const playSound = () =>{
+    sound.playAsync();
+  }
+
   const [busInfoDeviceTokenEditMutation] = useMutation(
     BUS_INFO_DEVICETOKEN_EDIT_QUERY
   );
 
   useEffect(() => {
     getPushNotificationPermissions();
+    Audio.setAudioModeAsync({
+      allowsRecordingIOS: false,
+      interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
+      playsInSilentModeIOS: true,
+      interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DUCK_OTHERS,
+      shouldDuckAndroid: true,
+      staysActiveInBackground: true,
+      playThroughEarpieceAndroid: true
+    });
+
+    const test = async() => {
+
+      const sound = new Audio.Sound();
+  
+      const status = {
+        shouldPlay: true
+      }
+      sound.loadAsync(require('../../../assets/gogo.wav'), status, false);
+  
+      sound.playAsync()
+    }
+    test();
 
     let timer = setInterval(() => {
       refetch();
-      console.log("timer")
+      
     }, 10000);
 
     return () => clearInterval(timer);
