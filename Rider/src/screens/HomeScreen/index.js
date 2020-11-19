@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Audio } from 'expo-av';
+import { Audio } from "expo-av";
 import {
   StyleSheet,
   View,
@@ -26,10 +26,11 @@ import { useMutation } from "react-apollo-hooks";
 import style from "../../../constants/style";
 import { DataTable } from "react-native-paper";
 import { Button } from "galio-framework";
+import Icon from "react-native-fontawesome-pro";
 
 export default ({ route }) => {
   // const noticeAlarm = !loading && !noticeLoading && notice && notice.RiderReservationNotice && notice.RiderReservationNotice.count;
-      
+
   const fonts = useFonts({
     "Noto-100": require("../../../assets/fonts/NotoSansKR-Thin.otf"),
     "Noto-200": require("../../../assets/fonts/NotoSansKR-Light.otf"),
@@ -66,7 +67,7 @@ export default ({ route }) => {
       },
     });
   };
-  
+
   const [busInfoSeat1EditMutation] = useMutation(BUS_INFO_SEAT1_EDIT_QUERY);
   const [busInfoSeat2EditMutation] = useMutation(BUS_INFO_SEAT2_EDIT_QUERY);
   const [seat1, setSeat1] = useState(false);
@@ -79,13 +80,16 @@ export default ({ route }) => {
     },
   });
 
-  const { data:notice, noticeLoading , refetch:noticeRefetch } = useQuery(RESERVATION_NOTICE_QUERY, {
-    fetchPolicy: "network-only",
-    variables: {
-      CAR_REG_NO: CAR_REG_NO,
-    },
-  });
-   
+  const { data: notice, noticeLoading, refetch: noticeRefetch } = useQuery(
+    RESERVATION_NOTICE_QUERY,
+    {
+      fetchPolicy: "network-only",
+      variables: {
+        CAR_REG_NO: CAR_REG_NO,
+      },
+    }
+  );
+
   const seat1Change = async () => {
     setSeat1(!seat1);
 
@@ -112,10 +116,10 @@ export default ({ route }) => {
   };
 
   useEffect(() => {
-    // getPushNotificationPermissions();      
-    let timer = setInterval(() => {      
-      refetch();      
-      noticeRefetch();      
+    // getPushNotificationPermissions();
+    let timer = setInterval(() => {
+      refetch();
+      noticeRefetch();
       // if(noticeAlarm > 0){
       //   test();
       // }
@@ -123,7 +127,7 @@ export default ({ route }) => {
 
     return () => clearInterval(timer);
   }, []);
-  
+
   useEffect(() => {
     Audio.setAudioModeAsync({
       allowsRecordingIOS: false,
@@ -132,23 +136,26 @@ export default ({ route }) => {
       interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DUCK_OTHERS,
       shouldDuckAndroid: true,
       staysActiveInBackground: true,
-      playThroughEarpieceAndroid: true
+      playThroughEarpieceAndroid: true,
     });
 
-    const test = async() => {
-
+    const test = async () => {
       const sound = new Audio.Sound();
-  
+
       const status = {
-        shouldPlay: true
-      }
-      sound.loadAsync(require('../../../assets/gogo.wav'), status, false);
-  
-      sound.playAsync()
-    }
+        shouldPlay: true,
+      };
+      sound.loadAsync(require("../../../assets/gogo.wav"), status, false);
 
+      sound.playAsync();
+    };
 
-    if(!noticeLoading && notice && notice.RiderReservationNotice && notice.RiderReservationNotice.count > 0){
+    if (
+      !noticeLoading &&
+      notice &&
+      notice.RiderReservationNotice &&
+      notice.RiderReservationNotice.count > 0
+    ) {
       test();
     }
   }, [notice]);
@@ -164,8 +171,22 @@ export default ({ route }) => {
         />
         <View style={styles.container}>
           <View style={styles.top}>
-            <View style={{ marginBottom: 10 }}>
-              <Text style={{ fontSize: 21, color: "#111", fontWeight: "bold" }}>
+            <View
+              style={{
+                marginBottom: 10,
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <Icon name="wheelchair" type="light" size={21} color={"#111"} />
+              <Text
+                style={{
+                  fontSize: 21,
+                  color: "#111",
+                  fontWeight: "bold",
+                  marginLeft: 5,
+                }}
+              >
                 좌석 현황
               </Text>
             </View>
@@ -182,22 +203,22 @@ export default ({ route }) => {
                   style={
                     seat1
                       ? {
-                        ...styles.onCheckbox,
-                      }
+                          ...styles.onCheckbox,
+                        }
                       : {
-                        ...styles.checkbox,
-                      }
+                          ...styles.checkbox,
+                        }
                   }
                 />
                 <Text
                   style={
                     seat1
                       ? {
-                        ...styles.onLabel,
-                      }
+                          ...styles.onLabel,
+                        }
                       : {
-                        ...styles.label,
-                      }
+                          ...styles.label,
+                        }
                   }
                 >
                   좌석1
@@ -215,22 +236,22 @@ export default ({ route }) => {
                   style={
                     seat2
                       ? {
-                        ...styles.onCheckbox,
-                      }
+                          ...styles.onCheckbox,
+                        }
                       : {
-                        ...styles.checkbox,
-                      }
+                          ...styles.checkbox,
+                        }
                   }
                 />
                 <Text
                   style={
                     seat2
                       ? {
-                        ...styles.onLabel,
-                      }
+                          ...styles.onLabel,
+                        }
                       : {
-                        ...styles.label,
-                      }
+                          ...styles.label,
+                        }
                   }
                 >
                   좌석2
@@ -240,8 +261,22 @@ export default ({ route }) => {
           </View>
 
           <View style={{ flex: 1 }}>
-            <View style={{ marginBottom: 10 }}>
-              <Text style={{ fontSize: 21, color: "#111", fontWeight: "bold" }}>
+            <View
+              style={{
+                marginBottom: 10,
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <Icon name="bus" type="light" size={21} color={"#111"} />
+              <Text
+                style={{
+                  fontSize: 21,
+                  color: "#111",
+                  fontWeight: "bold",
+                  marginLeft: 5,
+                }}
+              >
                 예약자 현황
               </Text>
             </View>
@@ -309,22 +344,22 @@ export default ({ route }) => {
                   style={
                     seat1
                       ? {
-                        ...styles.onCheckbox,
-                      }
+                          ...styles.onCheckbox,
+                        }
                       : {
-                        ...styles.checkbox,
-                      }
+                          ...styles.checkbox,
+                        }
                   }
                 />
                 <Text
                   style={
                     seat1
                       ? {
-                        ...styles.onLabel,
-                      }
+                          ...styles.onLabel,
+                        }
                       : {
-                        ...styles.label,
-                      }
+                          ...styles.label,
+                        }
                   }
                 >
                   좌석1
@@ -342,22 +377,22 @@ export default ({ route }) => {
                   style={
                     seat2
                       ? {
-                        ...styles.onCheckbox,
-                      }
+                          ...styles.onCheckbox,
+                        }
                       : {
-                        ...styles.checkbox,
-                      }
+                          ...styles.checkbox,
+                        }
                   }
                 />
                 <Text
                   style={
                     seat2
                       ? {
-                        ...styles.onLabel,
-                      }
+                          ...styles.onLabel,
+                        }
                       : {
-                        ...styles.label,
-                      }
+                          ...styles.label,
+                        }
                   }
                 >
                   좌석2
@@ -400,15 +435,19 @@ export default ({ route }) => {
                           style={[styles.tableTd, styles.tableCell1]}
                         >
                           <Text
-                            // style={{
-                            //   paddingVertical: 8,
-                            //   paddingHorizontal: 12,
-                            //   fontSize: 16,
-                            //   backgroundColor: "red",
-                            //   color: "#fff",
-                            // }}
+                          // style={{
+                          //   paddingVertical: 8,
+                          //   paddingHorizontal: 12,
+                          //   fontSize: 16,
+                          //   backgroundColor: "red",
+                          //   color: "#fff",
+                          // }}
                           >
-                            {rowData.pay ? <Text>결제 완료</Text> : <Text>-</Text> }
+                            {rowData.pay ? (
+                              <Text>결제 완료</Text>
+                            ) : (
+                              <Text>-</Text>
+                            )}
                           </Text>
                         </DataTable.Cell>
                         <DataTable.Cell
