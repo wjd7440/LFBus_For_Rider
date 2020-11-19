@@ -61,6 +61,38 @@ export const RESERVATION_LIST_QUERY = gql`
         equipment
         equipmentName
         memo
+        pay
+      }
+      count
+    }
+  }
+`;
+
+export const RESERVATION_NOTICE_QUERY = gql`
+  query RiderReservationNotice(
+    $keyword: String
+    $skip: Int
+    $first: Int
+    $CAR_REG_NO: String!
+  ) {
+    RiderReservationNotice(
+      keyword: $keyword
+      orderBy: "id_DESC"
+      skip: $skip
+      first: $first
+      CAR_REG_NO: $CAR_REG_NO
+    ) {
+      reservations {
+        id
+        CAR_REG_NO
+        ROUTE_NO
+        BUS_NODE_ID
+        departureStation
+        arrivalStation
+        equipment
+        equipmentName
+        memo
+        pay
       }
       count
     }

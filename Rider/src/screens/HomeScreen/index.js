@@ -20,6 +20,7 @@ import {
   BUS_INFO_SEAT1_EDIT_QUERY,
   BUS_INFO_SEAT2_EDIT_QUERY,
   BUS_INFO_DEVICETOKEN_EDIT_QUERY,
+  RESERVATION_NOTICE_QUERY,
 } from "../Queries";
 import { useMutation } from "react-apollo-hooks";
 import style from "../../../constants/style";
@@ -27,6 +28,8 @@ import { DataTable } from "react-native-paper";
 import { Button } from "galio-framework";
 
 export default ({ route }) => {
+  // const noticeAlarm = !loading && !noticeLoading && notice && notice.RiderReservationNotice && notice.RiderReservationNotice.count;
+      
   const fonts = useFonts({
     "Noto-100": require("../../../assets/fonts/NotoSansKR-Thin.otf"),
     "Noto-200": require("../../../assets/fonts/NotoSansKR-Light.otf"),
@@ -36,46 +39,9 @@ export default ({ route }) => {
     "Noto-900": require("../../../assets/fonts/NotoSansKR-Black.otf"),
   });
 
-  const playSound = () =>{
-    sound.playAsync();
-  }
-
   const [busInfoDeviceTokenEditMutation] = useMutation(
     BUS_INFO_DEVICETOKEN_EDIT_QUERY
   );
-
-  useEffect(() => {
-    getPushNotificationPermissions();
-    Audio.setAudioModeAsync({
-      allowsRecordingIOS: false,
-      interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
-      playsInSilentModeIOS: true,
-      interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DUCK_OTHERS,
-      shouldDuckAndroid: true,
-      staysActiveInBackground: true,
-      playThroughEarpieceAndroid: true
-    });
-
-    const test = async() => {
-
-      const sound = new Audio.Sound();
-  
-      const status = {
-        shouldPlay: true
-      }
-      sound.loadAsync(require('../../../assets/gogo.wav'), status, false);
-  
-      sound.playAsync()
-    }
-    test();
-
-    let timer = setInterval(() => {
-      refetch();
-      
-    }, 10000);
-
-    return () => clearInterval(timer);
-  }, []);
 
   const getPushNotificationPermissions = async () => {
     const { status: existingStatus } = await Permissions.getAsync(
@@ -83,26 +49,14 @@ export default ({ route }) => {
     );
     let finalStatus = existingStatus;
 
-    // only ask if permissions have not already been determined, because
-    // iOS won't necessarily prompt the user a second time.
     if (existingStatus !== "granted") {
-      // Android remote notification permissions are granted during the app
-      // install, so this will only ask on iOS
       const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
       finalStatus = status;
     }
 
-    // Stop here if the user did not grant permissions
     if (finalStatus !== "granted") {
       return;
     }
-    console.log(finalStatus);
-
-    // Get the token that uniquely identifies this device
-    console.log(
-      "Notification Token: ",
-      await Notifications.getExpoPushTokenAsync()
-    );
     const {
       data: { RiderBusInfoDeviceTokenEdit },
     } = await busInfoDeviceTokenEditMutation({
@@ -112,7 +66,7 @@ export default ({ route }) => {
       },
     });
   };
-
+  
   const [busInfoSeat1EditMutation] = useMutation(BUS_INFO_SEAT1_EDIT_QUERY);
   const [busInfoSeat2EditMutation] = useMutation(BUS_INFO_SEAT2_EDIT_QUERY);
   const [seat1, setSeat1] = useState(false);
@@ -124,6 +78,14 @@ export default ({ route }) => {
       CAR_REG_NO: CAR_REG_NO,
     },
   });
+
+  const { data:notice, noticeLoading , refetch:noticeRefetch } = useQuery(RESERVATION_NOTICE_QUERY, {
+    fetchPolicy: "network-only",
+    variables: {
+      CAR_REG_NO: CAR_REG_NO,
+    },
+  });
+   
   const seat1Change = async () => {
     setSeat1(!seat1);
 
@@ -148,6 +110,48 @@ export default ({ route }) => {
       },
     });
   };
+
+  useEffect(() => {
+    // getPushNotificationPermissions();      
+    let timer = setInterval(() => {      
+      refetch();      
+      noticeRefetch();      
+      // if(noticeAlarm > 0){
+      //   test();
+      // }
+    }, 10000);
+
+    return () => clearInterval(timer);
+  }, []);
+  
+  useEffect(() => {
+    Audio.setAudioModeAsync({
+      allowsRecordingIOS: false,
+      interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
+      playsInSilentModeIOS: true,
+      interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DUCK_OTHERS,
+      shouldDuckAndroid: true,
+      staysActiveInBackground: true,
+      playThroughEarpieceAndroid: true
+    });
+
+    const test = async() => {
+
+      const sound = new Audio.Sound();
+  
+      const status = {
+        shouldPlay: true
+      }
+      sound.loadAsync(require('../../../assets/gogo.wav'), status, false);
+  
+      sound.playAsync()
+    }
+
+
+    if(!noticeLoading && notice && notice.RiderReservationNotice && notice.RiderReservationNotice.count > 0){
+      test();
+    }
+  }, [notice]);
 
   if (loading || data.RiderReservationList.count < 1) {
     return (
@@ -245,7 +249,7 @@ export default ({ route }) => {
             <DataTable style={{ borderWidth: 1, borderColor: "#ddd", flex: 1 }}>
               <DataTable.Header style={styles.tableHeader}>
                 <DataTable.Title style={[styles.tableTh, styles.tableCell1]}>
-                  <Text style={styles.tableThTxt}>기능</Text>
+                  <Text style={styles.tableThTxt}>결제 여부</Text>
                 </DataTable.Title>
                 <DataTable.Title style={[styles.tableTh, styles.tableCell2]}>
                   <Text style={styles.tableThTxt}>승차</Text>
@@ -372,7 +376,7 @@ export default ({ route }) => {
             <DataTable style={{ borderWidth: 1, borderColor: "#ddd", flex: 1 }}>
               <DataTable.Header style={styles.tableHeader}>
                 <DataTable.Title style={[styles.tableTh, styles.tableCell1]}>
-                  <Text style={styles.tableThTxt}>기능</Text>
+                  <Text style={styles.tableThTxt}>결제 여부</Text>
                 </DataTable.Title>
                 <DataTable.Title style={[styles.tableTh, styles.tableCell2]}>
                   <Text style={styles.tableThTxt}>승차</Text>
@@ -396,15 +400,15 @@ export default ({ route }) => {
                           style={[styles.tableTd, styles.tableCell1]}
                         >
                           <Text
-                            style={{
-                              paddingVertical: 8,
-                              paddingHorizontal: 12,
-                              fontSize: 16,
-                              backgroundColor: "red",
-                              color: "#fff",
-                            }}
+                            // style={{
+                            //   paddingVertical: 8,
+                            //   paddingHorizontal: 12,
+                            //   fontSize: 16,
+                            //   backgroundColor: "red",
+                            //   color: "#fff",
+                            // }}
                           >
-                            하차 완료
+                            {rowData.pay ? <Text>결제 완료</Text> : <Text>-</Text> }
                           </Text>
                         </DataTable.Cell>
                         <DataTable.Cell
